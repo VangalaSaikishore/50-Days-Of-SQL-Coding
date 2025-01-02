@@ -1,9 +1,1 @@
-Today's Problem Statement
-You are provided with a table CITY that contains the following fields:
 
-ID: The unique identifier for each city.
-NAME: The name of the city.
-CountryCode: A three-letter code representing the country where the city is located (e.g., 'USA' for America).
-District: The district where the city is located.
-Population: The population of the city.
-Write a query to retrieve the names of all cities in the United States (where CountryCode = 'USA') that have populations greater than 120,000.
