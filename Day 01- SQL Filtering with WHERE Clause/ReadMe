@@ -1,0 +1,38 @@
+===> Todays Problem Statement(Day-01):
+You are provided with a table CITY that contains the following fields:
+
+ID: The unique identifier for each city.
+NAME: The name of the city.
+CountryCode: A three-letter code representing the country where the city is located (Assume 'USA' for America).
+District: The district where the city is located.
+Population: The population of the city.
+                                                                                     
+Write a query to retrieve the names of all cities in the United States (where CountryCode = 'USA') that have populations greater than 120,000.
+
+===> Solution:
+                                                                                     
+SELECT NAME
+FROM CITY
+WHERE CountryCode = 'USA'
+  AND Population > 120000; 
+
+===> TestCases:
+                                                                                     
+**Test Case 1:**                                                                                 
+Input-01 (Sample Table Rows):
+ID: 1, NAME: New York, CountryCode: USA, District: New York, Population: 8419000
+ID: 2, NAME: Los Angeles, CountryCode: USA, District: California, Population: 3980400
+
+Expected Output:
+New York
+Los Angeles                                                                                    
+
+**Test Case 2:**   
+Input-02
+ID: 3, NAME: Houston, CountryCode: USA, District: Texas, Population: 2300000
+ID: 4, NAME: Chicago, CountryCode: USA, District: Illinois, Population: 2705000     
+
+Expected Output:
+Houston
+Chicago
+                                                                                     
