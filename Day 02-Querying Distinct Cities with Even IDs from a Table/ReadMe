@@ -1,0 +1,46 @@
+===> Problem Statement:
+Query Cities with Even ID Numbers from STATION Table
+You are given a table named STATION with the following columns:
+
+ID (NUMBER): The unique identifier for each station.
+CITY (VARCHAR2(21)): The name of the city.
+STATE (VARCHAR2(2)): The state abbreviation.
+LAT_N (NUMBER): The northern latitude.
+LONG_W (NUMBER): The western longitude.
+
+Your task is to query a list of distinct city names (CITY) from the STATION table where the ID is an even number. The result should exclude duplicates and can be returned in any order.
+
+===>Solution
+To solve this problem, you can use the following SQL query:
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE MOD(ID, 2) = 0;
+
+===>Explanation:
+1. SELECT DISTINCT CITY: This retrieves the unique names of cities from the CITY column. Using DISTINCT ensures that there are no duplicate city names in the result.
+2. FROM STATION: Specifies the table from which to fetch the data.
+3. WHERE MOD(ID, 2) = 0: The MOD(ID, 2) function returns the remainder when the ID is divided by 2. This condition filters the rows to only include cities where the ID is even.
+
+===>Test Cases
+->Test Case 1
+->Input:
+ID: 1, CITY: 'New York', STATE: 'NY', LAT_N: 40.7128, LONG_W: -74.0060
+ID: 2, CITY: 'Los Angeles', STATE: 'CA', LAT_N: 34.0522, LONG_W: -118.2437
+ID: 3, CITY: 'Chicago', STATE: 'IL', LAT_N: 41.8781, LONG_W: -87.6298
+ID: 4, CITY: 'Houston', STATE: 'TX', LAT_N: 29.7604, LONG_W: -95.3698
+ID: 5, CITY: 'Phoenix', STATE: 'AZ', LAT_N: 33.4484, LONG_W: -112.0740
+
+===>Expected Output:
+Los Angeles
+Houston
+
+->Test Case 2
+->Input:
+ID: 6, CITY: 'San Francisco', STATE: 'CA', LAT_N: 37.7749, LONG_W: -122.4194
+ID: 7, CITY: 'Austin', STATE: 'TX', LAT_N: 30.2672, LONG_W: -97.7431
+ID: 8, CITY: 'Seattle', STATE: 'WA', LAT_N: 47.6062, LONG_W: -122.3321
+
+===>Expected Output:
+San Francisco
+Seattle
