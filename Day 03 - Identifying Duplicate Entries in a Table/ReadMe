@@ -1,0 +1,58 @@
+===>Problem Statement
+You are given a table named STATION that contains information about various cities and stations. The table has the following structure:
+
+- ID: Unique identifier for the station (NUMBER).
+- CITY: Name of the city (VARCHAR2(21)).
+- STATE: State abbreviation (VARCHAR2(2)).
+- LAT_N: Northern latitude (NUMBER).
+- LONG_W: Western longitude (NUMBER).
+
+Your task is to find the difference between the total number of city entries (CITY) and the number of distinct city names in the CITY column. This difference indicates the count of duplicate city entries in the table.
+
+===>Solution
+The SQL query to calculate the difference is:
+
+SELECT COUNT(CITY) - COUNT(DISTINCT CITY) AS DIFFERENCE
+FROM STATION;
+
+===>Explanation
+- COUNT(CITY):
+- This counts all rows in the CITY column, including duplicates.
+
+===>For example, if the CITY column contains ['New York', 'New York', 'Bengaluru'], the total count will be 3.
+COUNT(DISTINCT CITY):
+
+This counts the number of unique city names in the CITY column.
+In the example above, the distinct cities are 'New York' and 'Bengaluru', so the distinct count is 2.
+
+===>Difference Calculation:
+- Subtract the distinct count from the total count to find the number of duplicate city entries.
+- In this case: 3 - 2 = 1.
+- The query thus returns 1, indicating there is one duplicate entry.
+
+===>Test Cases:
+- Test Case 1
+Input: CITY column contains:
+
+'New York'
+'New York'
+'Bengaluru'
+
+- Execution:
+Total entries (COUNT(CITY)): 3
+Distinct entries (COUNT(DISTINCT CITY)): 2
+Difference: 3 - 2 = 1
+Output: 1
+
+===>Test Case 2
+- Input: CITY column contains:
+
+'Chicago'
+'Los Angeles'
+'Houston'
+
+- Execution:
+Total entries (COUNT(CITY)): 3
+Distinct entries (COUNT(DISTINCT CITY)): 3
+Difference: 3 - 3 = 0
+Output: 0
