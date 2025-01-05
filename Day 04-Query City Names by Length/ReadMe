@@ -26,7 +26,7 @@ FROM STATION
 ORDER BY LENGTH(CITY) DESC, CITY ASC  
 FETCH FIRST 1 ROW ONLY;  
 
-===>Explanation
+===>Explanation:
 =>Finding the Shortest City Name:
 
 - LENGTH(CITY) ASC: Orders cities by name length in ascending order.
@@ -38,3 +38,32 @@ FETCH FIRST 1 ROW ONLY;
 - LENGTH(CITY) DESC: Orders cities by name length in descending order.
 - CITY ASC: Ensures that for cities with the same length, the alphabetically first city is selected.
 - FETCH FIRST 1 ROW ONLY: Limits the result to one row.
+
+===>Test cases:
+
+=>Test Case 1
+Input (CITY column values):
+
+'Delhi'
+'Agra'
+'Mumbai'
+'Pune'
+
+=> Output:
+
+Agra 4  
+Mumbai 6  
+
+=>Test Case 2
+Input (CITY column values):
+
+'AA'
+'BB'
+'CCCC'
+'DDD'
+Output:
+
+=> Output:
+
+AA 2  
+CCCC 4  
