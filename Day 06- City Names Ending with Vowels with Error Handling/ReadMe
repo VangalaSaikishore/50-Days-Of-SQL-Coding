@@ -1,0 +1,61 @@
+===>Problem Statement
+Query the distinct city names from the STATION table where the city name ends with a vowel (i.e., 'A', 'E', 'I', 'O', 'U'). Ensure no duplicates are included in the result. If an invalid operation occurs (e.g., index out of range), the query should handle such cases gracefully.
+
+The STATION table is structured as follows:
+
+ID: Unique identifier for the station (NUMBER).
+CITY: Name of the city (VARCHAR2(21)).
+STATE: State abbreviation (VARCHAR2(2)).
+LAT_N: Northern latitude (NUMBER).
+LONG_W: Western longitude (NUMBER).
+
+===>Solution
+To prevent errors like SQL0138N due to out-of-range indices, we ensure the query handles edge cases such as empty or null CITY values and uses valid string operations.
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE UPPER(SUBSTR(CITY, LENGTH(CITY), 1)) IN ('A', 'E', 'I', 'O', 'U');
+
+===>Explanation
+
+1. SUBSTR(CITY, LENGTH(CITY), 1)
+- Extracts the last character of each CITY name.
+- Uses LENGTH(CITY) to ensure the starting position is valid.
+
+2. UPPER()
+- Converts the last character to uppercase for case-insensitive comparison.
+
+3. IN ('A', 'E', 'I', 'O', 'U')
+- Filters city names ending with a vowel.
+
+4. DISTINCT
+Eliminates duplicate city names.
+
+5. Error Prevention
+Handles cases where CITY is null or empty by ensuring the LENGTH(CITY) calculation does not fail.
+
+===>Test Cases
+Test Case 1: Standard Input
+Input (CITY column values):
+
+'Agra', 'Rome', 'Delhi', 'Oslo', 'Rome'
+
+===>Expected Output:
+
+Copy code
+Agra  
+Rome  
+Oslo  
+
+===>Test Case 2: Mixed Case Sensitivity
+Input (CITY column values):
+
+'Kyoto', 'Lima', 'MUMBAI', 'nairobi', 'OSLO'
+
+===>Expected Output:
+
+Kyoto  
+Lima  
+Mumbai  
+Nairobi  
+Oslo  
