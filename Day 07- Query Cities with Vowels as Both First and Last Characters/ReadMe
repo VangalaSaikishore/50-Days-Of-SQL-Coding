@@ -1,0 +1,56 @@
+===> Problem Statement
+Query the list of CITY names from the STATION table that have vowels (i.e., 'A', 'E', 'I', 'O', 'U') as both their first and last characters. The result should not contain any duplicates.
+
+The STATION table is described as follows:
+
+ID: Unique identifier for the station (NUMBER).
+CITY: Name of the city (VARCHAR2(21)).
+STATE: State abbreviation (VARCHAR2(2)).
+LAT_N: Northern latitude (NUMBER).
+LONG_W: Western longitude (NUMBER).
+
+===>Solution
+To find cities where both the first and last characters are vowels, we will use string functions such as SUBSTR() and UPPER(). The SUBSTR() function will extract the first and last characters of each city name, and the UPPER() function will ensure the comparison is case-insensitive.
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE UPPER(SUBSTR(CITY, 1, 1)) IN ('A', 'E', 'I', 'O', 'U')
+AND UPPER(SUBSTR(CITY, LENGTH(CITY), 1)) IN ('A', 'E', 'I', 'O', 'U');
+
+===>Explanation
+
+UPPER(SUBSTR(CITY, 1, 1))
+
+Extracts the first character of the CITY name and converts it to uppercase to make the comparison case-insensitive.
+UPPER(SUBSTR(CITY, LENGTH(CITY), 1))
+
+Extracts the last character of the CITY name and converts it to uppercase for case-insensitive comparison.
+IN ('A', 'E', 'I', 'O', 'U')
+
+Filters the cities to include only those whose first and last characters are vowels.
+DISTINCT
+
+Ensures that the list of cities has no duplicates.
+
+===>Test Cases
+
+=>Test Case 1: Standard Input
+Input (CITY column values):
+'Avenue', 'Edge', 'Island', 'Oslo', 'Utah', 'Ariana', 'Elite'
+
+=>Expected Output:
+
+Avenue  
+Edge  
+Island  
+Oslo  
+Utah  
+Ariana  
+Elite
+
+=>Test Case 2: Cities with no vowels at both ends
+Input (CITY column values):
+'Beverly', 'Chicago', 'Houston', 'Dallas'
+
+=>Expected Output:
+(empty result set)
