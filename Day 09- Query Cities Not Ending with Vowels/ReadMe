@@ -1,0 +1,51 @@
+===>Problem Statement:
+Query the list of unique CITY names from the STATION table that do not end with a vowel (i.e., 'A', 'E', 'I', 'O', 'U'). Ensure no duplicates in the result. Handle potential errors gracefully, such as null or empty values in the CITY column.
+
+The STATION table has the following structure:
+
+ID: Unique identifier for the station (NUMBER).
+CITY: Name of the city (VARCHAR2(21)).
+STATE: State abbreviation (VARCHAR2(2)).
+LAT_N: Northern latitude (NUMBER).
+LONG_W: Western longitude (NUMBER).
+
+===>Solution:
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE UPPER(SUBSTR(CITY, LENGTH(CITY), 1)) NOT IN ('A', 'E', 'I', 'O', 'U');
+
+===> Explanation:
+SUBSTR(CITY, LENGTH(CITY), 1)
+Extracts the last character of each city name using the length of the city name to determine the position.
+
+UPPER()
+Converts the extracted character to uppercase, ensuring a case-insensitive comparison.
+
+NOT IN ('A', 'E', 'I', 'O', 'U')
+Filters out city names ending with vowels.
+
+DISTINCT
+Removes duplicate city names from the result set.
+
+Error Handling
+Handles null or empty CITY values implicitly since LENGTH(CITY) and SUBSTR will not process them.
+
+===>Test Cases:
+Test Case 1: Cities Not Ending with Vowels
+Input (CITY column values):
+'Berlin', 'Oslo', 'Kyoto', 'Lima'
+
+===>Expected Output:
+
+Berlin  
+Kyoto  
+
+===>Test Case 2: Null and Empty CITY Values
+Input (CITY column values):
+'Delhi', null, '', 'Paris'
+
+===>Expected Output:
+
+Delhi  
+Paris  
