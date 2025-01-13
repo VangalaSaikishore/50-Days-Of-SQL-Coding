@@ -1,0 +1,59 @@
+===> Problem Statement:
+Query the names of students from the STUDENTS table who scored higher than a given threshold (Marks > 75). Only include students with names that have at least three characters to avoid out-of-range errors. Order the results by the last three characters of the names alphabetically. If multiple names share the same last three characters, sort them by ascending ID.
+The STUDENTS table is structured as follows:
+
+Name: Name of the student (VARCHAR).
+Marks: Marks scored by the student (INTEGER).
+ID: Unique identifier for each student (INTEGER).
+
+===>Solution
+
+SELECT Name
+FROM STUDENTS
+WHERE Marks > 75 -- Replace with your threshold
+AND LENGTH(Name) >= 3 -- Ensure Name has at least 3 characters
+ORDER BY SUBSTR(Name, LENGTH(Name) - 2, 3), ID ASC;
+
+===>Explanation
+->Marks > 75
+Filters students who scored more than 75 marks.
+
+->LENGTH(Name) >= 3
+Ensures names have at least three characters to prevent out-of-range errors when extracting substrings.
+
+->SUBSTR(Name, LENGTH(Name) - 2, 3)
+Extracts the last three characters of each name for sorting.
+LENGTH(Name) - 2 calculates the starting position, ensuring safety even for names with exactly three characters.
+
+->ORDER BY
+First sorts the names by the last three characters in alphabetical order.
+If two or more names share the same last three characters, uses the ID column for secondary sorting in ascending order.
+
+===> Test Cases:
+Test Case 1: Valid Input with Unique Last Three Characters
+
+==>Input:
+
+Students: Ashley, Julia, Belvet
+Marks: Ashley (85), Julia (90), Belvet (88)
+IDs: Ashley (1), Julia (2), Belvet (3)
+
+==>Expected Output:
+
+Ashley  
+Julia  
+Belvet
+
+==>Test Case 2: Names with Duplicate Last Three Characters
+==>Input:
+
+Students: Bobby, Robby, Tabby
+Marks: Bobby (88), Robby (92), Tabby (85)
+IDs: Bobby (1), Robby (2), Tabby (3)
+
+==>Expected Output:
+
+Copy code
+Bobby  
+Robby  
+Tabby
