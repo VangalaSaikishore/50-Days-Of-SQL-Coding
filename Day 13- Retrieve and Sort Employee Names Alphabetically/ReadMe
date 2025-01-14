@@ -1,0 +1,46 @@
+===>Problem Statement
+
+Write a query to retrieve and print a list of employee names (name attribute) from the Employee table in alphabetical order. The output should list all employee names sorted in ascending order, with no additional conditions applied.
+
+The Employee table contains the following columns:
+employee_id: A unique identifier for each employee (INTEGER).
+name: The name of the employee (VARCHAR).
+months: The number of months the employee has worked at the company (INTEGER).
+salary: The monthly salary of the employee (INTEGER).
+
+===>Solution
+The SQL query to achieve this is:
+
+SELECT name
+FROM Employee
+ORDER BY name ASC;
+
+===>Explanation
+- SELECT name: Retrieves the name column from the Employee table.
+- ORDER BY name ASC: Sorts the names in ascending alphabetical order. The ASC keyword ensures the default sorting order is followed, starting with A and ending with Z.
+
+===>Test Cases
+- Test Case 1:
+Input:
+Employee Table:
+
+Angela
+Lisa
+Michael
+Bonnie
+
+===>Expected Output:
+Angela  
+Bonnie  
+Lisa  
+Michael  
+
+===>Test Case 2:
+- Input:
+Employee Table:
+
+Joe
+Rose
+Kimberly
+Todd
+Frank
