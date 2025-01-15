@@ -1,0 +1,62 @@
+===>Problem Statement:
+Write a query to print the names of employees (from the Employee table) whose monthly salary is greater than a given threshold and who have been working in the company for fewer months than a given limit. The results should be sorted in ascending order of their employee_id.
+
+===>Solution:
+
+SELECT name
+FROM Employee
+WHERE salary > 5000 AND months < 4
+ORDER BY employee_id ASC;
+
+==>Explanation:
+- Table Structure: The Employee table contains the following columns:
+- employee_id: A unique identifier for the employee.
+- name: The name of the employee.
+- months: The total number of months the employee has worked in the company.
+- salary: The employee monthly salary.
+
+===>Filter Conditions:
+
+- Employees with a salary greater than 5000 are selected (salary > 5000).
+- Employees who have been with the company for fewer than 4 months are selected (months < 4).
+
+===>Sorting:
+- The results are sorted in ascending order by employee_id to ensure proper ordering.
+
+===>Query Execution:
+- The query retrieves the name column for all employees meeting the conditions, and it sorts them by their employee_id.
+
+===>Test Cases:
+Test Case 1:
+Input Table (Employee):
+employee_id | name      | months | salary  
+1           | Angela    | 1      | 6000  
+2           | Michael   | 2      | 5500  
+3           | Todd      | 3      | 7000  
+4           | Joe       | 4      | 8000  
+5           | Sarah     | 5      | 5000  
+
+==>Expected Output:
+Angela  
+Michael  
+Todd  
+
+===>Explanation:
+Angela, Michael, and Todd satisfy the conditions (salary > 5000 and months < 4).
+The results are sorted by employee_id in ascending order.
+
+===>Test Case 2:
+Input Table (Employee):
+employee_id | name      | months | salary  
+1           | Alex      | 6      | 4000  
+2           | Rachel    | 2      | 7000  
+3           | Sam       | 3      | 8000  
+4           | John      | 4      | 5500  
+
+==>Expected Output:
+Rachel  
+Sam  
+
+===>Explanation:
+Rachel and Sam satisfy the conditions (salary > 5000 and months < 4).
+The results are sorted by employee_id in ascending order.
