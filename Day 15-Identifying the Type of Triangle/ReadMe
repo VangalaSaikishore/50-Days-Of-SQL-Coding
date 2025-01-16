@@ -1,0 +1,48 @@
+===> Problem Statement:
+Given a database table TRIANGLES with three columns (A, B, and C) representing the lengths of the sides of a triangle, write a query to determine the type of triangle or whether the given lengths do not form a triangle. The result should be one of the following:
+
+Equilateral: All three sides are of equal length.
+Isosceles: Two sides are of equal length.
+Scalene: All sides have different lengths.
+Not A Triangle: The given lengths do not satisfy the triangle inequality conditions.
+
+===> Solution:
+
+SELECT 
+    CASE 
+        WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'
+        WHEN A = B AND B = C THEN 'Equilateral'
+        WHEN A = B OR B = C OR A = C THEN 'Isosceles'
+        ELSE 'Scalene'
+    END AS Triangle_Type
+FROM TRIANGLES;
+
+===> Explanation:
+-> Not A Triangle:
+A triangle is valid only if the sum of any two sides is greater than the third side. If this condition is not satisfied (A + B <= C, A + C <= B, or B + C <= A), the result is Not A Triangle.
+
+->Equilateral:
+A triangle is equilateral if all three sides are equal (A = B AND B = C).
+
+->Isosceles:
+A triangle is isosceles if at least two sides are equal (A = B OR B = C OR A = C).
+
+->Scalene:
+A triangle is scalene if all three sides are of different lengths, meaning none of the equality conditions hold.
+
+===>Test Cases:
+-> Test Case 1:
+Input:
+A = 5, B = 5, C = 8
+
+->Output:
+Isosceles
+===>Explanation: Two sides are equal (A = B = 5), so it is an Isosceles triangle.
+
+===> Test Case 2:
+Input:
+A = 6, B = 6, C = 6
+
+===> Output:
+Equilateral
+Explanation: All three sides are equal (A = B = C = 6), so it is an Equilateral triangle.
