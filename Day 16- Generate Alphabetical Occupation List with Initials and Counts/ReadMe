@@ -1,0 +1,66 @@
+===> Problem Statement
+You are given an OCCUPATIONS table that contains the names of individuals and their respective professions. The task is to:
+
+Query an alphabetically ordered list of all names, immediately followed by the first letter of their profession in parentheses. For example, a doctor named "Alice" would appear as Alice(D).
+Count the occurrences of each occupation, and output the results in the format:
+There are a total of [count] [occupation]s.
+Sort the output first by the count of each occupation in ascending order.
+If two occupations have the same count, order them alphabetically.
+
+===>Solution
+===>Query 1: Generate Names with Occupation Initials
+
+SELECT Name || '(' || SUBSTR(Occupation, 1, 1) || ')' 
+FROM OCCUPATIONS
+ORDER BY Name;
+
+===>Query 2: Count and Output Each Occupation
+
+SELECT 
+    'There are a total of ' || COUNT(*) || ' ' || LOWER(Occupation) || 's.'
+FROM OCCUPATIONS
+GROUP BY Occupation
+ORDER BY COUNT(*) ASC, Occupation ASC;
+
+===>Explanation
+===>Query 1 Explanation:
+
+SUBSTR(Occupation, 1, 1) extracts the first character of the Occupation column (e.g., "D" for "Doctor").
+|| is used for string concatenation.
+The result combines the Name with the occupation initial in parentheses and sorts the output alphabetically by Name.
+
+===>Query 2 Explanation:
+
+COUNT(*) counts the number of rows for each occupation.
+LOWER(Occupation) ensures the occupation name is lowercase in the output.
+The output is formatted using concatenation and ordered by the count of occupations in ascending order. If two occupations have the same count, they are sorted alphabetically.
+
+                                                                                
+===>Test Cases
+Test Case 1: Input
+
++----+--------+------------+
+| ID | Name   | Occupation |
++----+--------+------------+
+| 1  | Alice  | Doctor     |
+| 2  | Bob    | Singer     |
+| 3  | Carol  | Actor      |
+| 4  | David  | Doctor     |
+| 5  | Eve    | Professor  |
+| 6  | Frank  | Singer     |
++----+--------+------------+
+===>Expected Output for Query 1:
+
+Alice(D)
+Bob(S)
+Carol(A)
+David(D)
+Eve(P)
+Frank(S)
+
+===>Expected Output for Query 2:
+
+There are a total of 2 singers.
+There are a total of 2 doctors.
+There are a total of 1 actors.
+There are a total of 1 professors.
