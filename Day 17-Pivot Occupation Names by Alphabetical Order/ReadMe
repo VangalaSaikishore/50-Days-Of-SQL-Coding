@@ -1,0 +1,82 @@
+
+===>Problem Statement:
+You are provided with a table named OCCUPATIONS that contains the names of individuals along with their respective occupations. Your task is to create a SQL query that:
+
+Pivots the Occupation column into four separate columns: Doctor, Professor, Singer, and Actor.
+Lists the names of individuals under their respective occupation columns, sorted alphabetically.
+If a particular occupation has fewer names than others, the empty cells should be filled with NULL.
+
+===>Table Structure:
+The OCCUPATIONS table has the following structure:
+
+Name	Occupation
+John	Doctor
+Alice	Professor
+Bob	Singer
+Charlie	Actor
+
+===>Requirements:
+The Doctor, Professor, Singer, and Actor columns should be populated with the names of individuals corresponding to each occupation.
+The names should be sorted alphabetically under each occupation.
+If there are fewer names in any occupation, the empty cells should contain NULL.
+
+===>Solution:
+To solve this problem, we can use a combination of the ROW_NUMBER() function, PIVOT, and a subquery to ensure the names are alphabetically sorted and each occupation is pivoted into a separate column.
+
+Here is the SQL query that accomplishes the task:
+
+SELECT [Doctor], [Professor], [Singer], [Actor]
+FROM (
+    SELECT Name, Occupation, ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS RowNumber
+    FROM OCCUPATIONS
+) AS AA
+PIVOT (
+    MAX(Name)
+    FOR Occupation IN ([Doctor], [Professor], [Singer], [Actor])
+) AS Pivottable
+ORDER BY RowNumber;
+
+===>Explanation:
+ROW_NUMBER(): The ROW_NUMBER() function is used to assign a unique number to each name within the Occupation group, ordered alphabetically by the Name.
+PIVOT: The PIVOT operator is used to transform the rows into columns, one for each occupation. The MAX(Name) function is used to retrieve the name corresponding to each occupation.
+Final SELECT: The query selects the pivoted columns and orders the results based on the RowNumber.
+
+===>Test Cases:
+Test Case 1: Basic Case with 4 occupations
+
+-- Input
+INSERT INTO OCCUPATIONS (Name, Occupation)
+VALUES 
+('Jenny', 'Doctor'),
+('Ashley', 'Professor'),
+('Meera', 'Singer'),
+('Jane', 'Actor'),
+('Samantha', 'Doctor'),
+('Christeen', 'Professor'),
+('Priya', 'Singer'),
+('Julia', 'Actor'),
+('Ketty', 'Professor'),
+('Maria', 'Actor');
+
+===> Expected Output
+| Doctor   | Professor | Singer  | Actor   |
+|----------|-----------|---------|---------|
+| Jenny    | Ashley    | Meera   | Jane    |
+| Samantha | Christeen | Priya   | Julia   |
+| NULL     | Ketty     | NULL    | Maria   |
+| NULL     | NULL      | NULL    | NULL    |
+
+===>Test Case 2: Case with missing occupations
+-- Input
+INSERT INTO OCCUPATIONS (Name, Occupation)
+VALUES 
+('Aamina', 'Doctor'),
+('Eve', 'Professor'),
+('Julia', 'Singer'),
+('Kristeen', 'Actor');
+
+-- Expected Output
+| Doctor   | Professor | Singer  | Actor   |
+|----------|-----------|---------|---------|
+| Aamina   | Eve       | Julia   | Kristeen|
+| NULL     | NULL      | NULL    | NULL    |
