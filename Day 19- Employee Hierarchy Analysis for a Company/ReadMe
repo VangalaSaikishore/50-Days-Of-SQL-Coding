@@ -1,0 +1,95 @@
+===>Problem Statement:
+You need to analyze a company's hierarchy by counting the number of lead managers, senior managers, managers, and employees associated with each company. The dataset involves multiple tables representing various hierarchical levels (Company, Lead_Manager, Senior_Manager, Manager, and Employee), and relationships between them need to be established. The goal is to provide aggregated counts of these roles per company.
+
+===>Solution:
+The solution involves using SQL to join the hierarchical tables (Lead_Manager, Senior_Manager, Manager, and Employee) to the Company table. The query ensures proper counting of distinct codes for each role and uses LEFT JOIN to account for companies that might not have entries for certain roles. The results are grouped by company and founder and sorted by the company_code.
+
+===>Explanation:
+LEFT JOIN: Ensures all companies are included, even if they do not have entries for certain hierarchical roles.
+COUNT(DISTINCT ...): Counts unique codes for each hierarchical level (lead manager, senior manager, manager, and employee).
+GROUP BY: Aggregates data by company_code and founder.
+Conditions in ON Clauses: Establish relationships between hierarchical levels to ensure accurate counts.
+
+===>Query:
+
+SELECT 
+    c.company_code,
+    c.founder,
+    COUNT(DISTINCT lm.lead_manager_code) AS total_lead_managers,
+    COUNT(DISTINCT sm.senior_manager_code) AS total_senior_managers,
+    COUNT(DISTINCT m.manager_code) AS total_managers,
+    COUNT(DISTINCT e.employee_code) AS total_employees
+FROM 
+    Company c
+LEFT JOIN 
+    Lead_Manager lm ON c.company_code = lm.company_code
+LEFT JOIN 
+    Senior_Manager sm ON c.company_code = sm.company_code AND lm.lead_manager_code = sm.lead_manager_code
+LEFT JOIN 
+    Manager m ON c.company_code = m.company_code AND sm.senior_manager_code = m.senior_manager_code AND lm.lead_manager_code = m.lead_manager_code
+LEFT JOIN 
+    Employee e ON c.company_code = e.company_code AND m.manager_code = e.manager_code AND sm.senior_manager_code = e.senior_manager_code AND lm.lead_manager_code = e.lead_manager_code
+GROUP BY 
+    c.company_code, c.founder
+ORDER BY 
+    c.company_code ASC;
+
+===> Test Cases:
+Test Case 1: Single Company with Complete Hierarchy
+Input:
+
+Company Table:
+
+Company_Code | Founder  
+-------------|---------  
+C001         | Alice  
+
+Lead_Manager Table:
+
+Lead_Manager_Code | Company_Code  
+------------------|-------------  
+L001              | C001  
+
+Senior_Manager Table:
+
+Senior_Manager_Code | Company_Code | Lead_Manager_Code  
+--------------------|--------------|-------------------  
+S001               | C001         | L001  
+
+Manager Table:
+
+Manager_Code | Company_Code | Senior_Manager_Code | Lead_Manager_Code  
+-------------|--------------|---------------------|-------------------  
+M001         | C001         | S001               | L001  
+
+Employee Table:
+
+Employee_Code | Company_Code | Manager_Code | Senior_Manager_Code | Lead_Manager_Code  
+--------------|--------------|--------------|---------------------|-------------------  
+E001          | C001         | M001         | S001               | L001  
+
+===>Expected Output:
+
+Company_Code | Founder | Total_Lead_Managers | Total_Senior_Managers | Total_Managers | Total_Employees  
+-------------|---------|---------------------|-----------------------|----------------|-----------------  
+C001         | Alice   | 1                   | 1                     | 1              | 1  
+
+===>Test Case 2: Company with Missing Hierarchy Levels
+Input:
+
+Company Table:
+
+Company_Code | Founder  
+-------------|---------  
+C002         | Bob  
+
+Lead_Manager Table:
+
+Lead_Manager_Code | Company_Code  
+------------------|-------------  
+NULL              | NULL  
+
+===>Expected Output:
+Company_Code | Founder | Total_Lead_Managers | Total_Senior_Managers | Total_Managers | Total_Employees  
+-------------|---------|---------------------|-----------------------|----------------|-----------------  
+C002         | Bob     | 0                   | 0                     | 0              | 0  
