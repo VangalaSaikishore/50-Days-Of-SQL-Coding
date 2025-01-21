@@ -1,0 +1,52 @@
+===> Problem Statement
+You are given a table named CITY that contains details about various cities. Your task is to write a query to count the number of cities with a population greater than or equal to 100,000. The result should display a single column labeled CityCount.
+
+===>Solution
+The SQL query to solve the problem is as follows:
+
+SELECT COUNT(*) AS CityCount
+FROM CITY
+WHERE Population >= 100000;
+
+===>Explanation
+- COUNT(*): This function counts the total number of rows that meet the specified condition.
+- FROM CITY: Specifies the table containing the city data.
+- WHERE Population >= 100000: Filters the rows to include only those cities where the Population is greater than or equal to 100,000.
+- AS CityCount: Provides an alias to the result column for better readability.
+- The query will return a single row with the count of cities that satisfy the condition.
+
+===>Test Cases
+Test Case 1: Cities with Population Greater Than or Equal to 100,000
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	CityA	XYZ	DistrictA	150000
+2	CityB	XYZ	DistrictB	90000
+3	CityC	XYZ	DistrictC	200000
+
+===>Query:
+
+SELECT COUNT(*) AS CityCount
+FROM CITY
+WHERE Population >= 100000;
+
+===>Expected Output:
+CityCount
+2
+
+===>Test Case 2: All Cities Meet the Condition
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	CityA	XYZ	DistrictA	120000
+2	CityB	XYZ	DistrictB	130000
+
+===>Query:
+
+SELECT COUNT(*) AS CityCount
+FROM CITY
+WHERE Population >= 100000;
+
+===>Expected Output:
+CityCount
+2
