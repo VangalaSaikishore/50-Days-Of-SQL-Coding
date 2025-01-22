@@ -1,0 +1,59 @@
+===>Problem Statement:
+Given a table CITY containing information about cities, query the total population of all cities where the District is California.
+
+===>Table Structure:
+The CITY table has the following columns:
+
+Column Name	Data Type	Description
+ID	INT	Unique identifier for each city.
+Name	VARCHAR	Name of the city.
+CountryCode	CHAR(3)	Country code where the city is located.
+District	VARCHAR	District of the city.
+Population	INT	Population of the city.
+
+===>Input:
+The table CITY will contain multiple rows with information about cities.
+
+===>Requirements:
+Write a SQL query to calculate the sum of the Population column for all rows where the District column is 'California'.
+
+===>Solution:
+Here is the SQL query to solve the problem:
+
+SELECT SUM(Population) AS TotalPopulation
+FROM CITY
+WHERE District = 'California';
+
+===>Explanation:
+- SELECT SUM(Population): This computes the total population of all cities that match the condition in the WHERE clause.
+- FROM CITY: Specifies that the data is to be retrieved from the CITY table.
+- WHERE District = 'California': Filters the rows to include only those where the District column is California.
+- AS TotalPopulation: Assigns a descriptive alias to the result for clarity.
+
+===>Test Cases:
+
+Test Case 1: Basic Case
+
+
+-- Input
+ID | Name        | CountryCode | District   | Population
+1  | Los Angeles | USA         | California | 3970000
+2  | San Diego   | USA         | California | 1423851
+3  | San Jose    | USA         | California | 1035317
+
+-- Query Output
+TotalPopulation
+6429168
+
+===>Test Case 2: Cities from Multiple Districts
+
+-- Input
+ID | Name        | CountryCode | District       | Population
+1  | Los Angeles | USA         | California     | 3970000
+2  | San Diego   | USA         | California     | 1423851
+3  | Houston     | USA         | Texas          | 2328000
+4  | Dallas      | USA         | Texas          | 1340000
+
+-- Query Output
+TotalPopulation
+5393851
