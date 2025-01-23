@@ -1,0 +1,53 @@
+===>Problem Statement
+You are given a table named CITY that contains information about various cities. Your task is to write a query to calculate the average population of all cities in the CITY table where the District is California. The result should display a single column named AveragePopulation.
+
+===>Solution:
+The SQL query to solve this problem is:
+
+SELECT AVG(Population) AS AveragePopulation
+FROM CITY
+WHERE District = 'California';
+
+===>Explanation:
+- AVG(Population): Calculates the average of the Population column values that meet the condition.
+- FROM CITY: Specifies the table containing city data.
+- WHERE District = 'California': Filters rows to include only those cities where the District is California.
+- AS AveragePopulation: Renames the resulting column for clarity.
+- The query will return the average population of cities in the district of California.
+
+===>Test Cases
+Test Case 1: Cities in California with Valid Data
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	Los Angeles	USA	California	4000000
+2	San Diego	USA	California	1500000
+3	San Jose	USA	California	1000000
+
+===>Query:
+
+SELECT AVG(Population) AS AveragePopulation
+FROM CITY
+WHERE District = 'California';
+
+===>Expected Output:
+
+AveragePopulation
+2166666.6667
+
+===>Test Case 2: No Cities in California
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	New York	USA	New York	8000000
+2	Chicago	USA	Illinois	2700000
+
+===>Query:
+
+SELECT AVG(Population) AS AveragePopulation
+FROM CITY
+WHERE District = 'California';
+
+===>Expected Output:
+AveragePopulation
+NULL
