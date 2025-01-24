@@ -1,0 +1,49 @@
+===> Problem Statement
+Write a query to calculate the average population of all cities in the CITY table. The result should be rounded down to the nearest integer.
+
+===>Solution
+The SQL query to solve this problem is:
+
+SELECT FLOOR(AVG(Population)) AS AveragePopulation
+FROM CITY;
+
+===>Explanation
+- AVG(Population): Computes the average population of all cities in the CITY table.
+- FLOOR: Rounds the result down to the nearest integer.
+- AS AveragePopulation: Renames the resulting column for clarity.
+- This query ensures that the average population is calculated and presented as an integer value.
+
+===>Test Cases
+Test Case 1: Valid Population Data
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	City A	XYZ	District 1	100000
+2	City B	XYZ	District 2	200000
+3	City C	XYZ	District 3	300000
+
+===>Query:
+
+SELECT FLOOR(AVG(Population)) AS AveragePopulation
+FROM CITY;
+
+===>Expected Output:
+
+AveragePopulation
+200000
+
+===>Test Case 2: Single City in Table
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	City A	XYZ	District 1	150000
+
+===>Query:
+
+SELECT FLOOR(AVG(Population)) AS AveragePopulation
+FROM CITY;
+
+===>Expected Output:
+
+AveragePopulation
+150000
