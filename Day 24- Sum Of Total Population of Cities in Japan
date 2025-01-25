@@ -1,0 +1,55 @@
+===> Problem Statement
+You are given a table named CITY that contains information about various cities, including their population and country codes. Write a query to calculate the total population of all cities in the CITY table where the COUNTRYCODE is 'JPN' (Japan).
+
+The result should display a single column named TotalPopulation.
+
+===> Solution
+The SQL query to solve this problem is:
+
+SELECT SUM(Population) AS TotalPopulation
+FROM CITY
+WHERE COUNTRYCODE = 'JPN';
+
+===> Explanation
+- SUM(Population): Aggregates the population of all cities where the condition is satisfied.
+- FROM CITY: Specifies the source table containing city data.
+- WHERE COUNTRYCODE = 'JPN': Filters rows to include only cities in Japan, as identified by their COUNTRYCODE.
+- AS TotalPopulation: Renames the resulting column to indicate it represents the total population.
+- The query will return a single number representing the combined population of all Japanese cities in the CITY table.
+
+===> Test Cases
+Test Case 1: Valid Data for Japan
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	Tokyo	JPN	Tokyo-to	9000000
+2	Osaka	JPN	Osaka-fu	2700000
+3	Yokohama	JPN	Kanagawa	3700000
+ 
+===>Query:
+
+SELECT SUM(Population) AS TotalPopulation
+FROM CITY
+WHERE COUNTRYCODE = 'JPN';
+
+===>Expected Output:
+TotalPopulation
+15400000
+
+===>Test Case 2: No Cities in Japan
+Input Data:
+
+ID	Name	CountryCode	District	Population
+1	New York	USA	New York	8000000
+2	London	GBR	England	8900000
+
+===>Query:
+
+SELECT SUM(Population) AS TotalPopulation
+FROM CITY
+WHERE COUNTRYCODE = 'JPN';
+
+===>Expected Output:
+
+TotalPopulation
+NULL
