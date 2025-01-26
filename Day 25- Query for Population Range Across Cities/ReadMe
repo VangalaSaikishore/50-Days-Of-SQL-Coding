@@ -1,0 +1,62 @@
+===> Problem Statement:
+Write a query to find the difference between the maximum and minimum populations in the CITY table. This will help identify the population disparity across cities.
+
+Input Format:
+The CITY table has the following structure:
+
+Column Name	Data Type	Description
+ID	INT	Unique identifier for each city.
+Name	VARCHAR	Name of the city.
+CountryCode	CHAR(3)	Country code where the city is located.
+District	VARCHAR	District of the city.
+Population	INT	Population of the city.
+
+===> Solution:
+We will compute the difference between the maximum population (MAX(Population)) and the minimum population (MIN(Population)) using the SQL query:
+
+SELECT MAX(Population) - MIN(Population) AS PopulationDifference
+FROM CITY;
+
+===> Explanation:
+
+- MAX(Population):
+ Returns the highest population value in the CITY table.
+
+- MIN(Population):
+ Returns the lowest population value in the CITY table.
+
+- Difference Calculation:
+ The subtraction of the minimum population from the maximum population gives the population disparity.
+
+- Alias (AS PopulationDifference):
+Renames the result column to PopulationDifference for clarity.
+
+===>Test Cases:
+Test Case 1:
+Input (CITY Table):
+ID	Name	CountryCode	District	Population
+1	CityA	ABC	District1	120000
+2	CityB	DEF	District2	250000
+3	CityC	GHI	District3	80000
+
+===>Query:
+
+SELECT MAX(Population) - MIN(Population) AS PopulationDifference
+FROM CITY;
+
+===>Output:
+170000
+
+===>Test Case 2:
+Input (CITY Table):
+ID	Name	CountryCode	District	Population
+1	CityX	JKL	District4	500000
+2	CityY	MNO	District5	100000
+3	CityZ	PQR	District6	300000
+
+===>Query:
+SELECT MAX(Population) - MIN(Population) AS PopulationDifference
+FROM CITY;
+
+===>Output:
+400000
