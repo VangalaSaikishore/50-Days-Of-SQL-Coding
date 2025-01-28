@@ -1,0 +1,62 @@
+===> Problem Statement
+Samantha mistakenly calculated the average monthly salary of employees in the EMPLOYEES table after removing all zeros from the salary values. Your task is to compute the error between her miscalculation and the actual average monthly salary. The result should be rounded up to the next integer.
+
+The EMPLOYEES table has the following columns:
+
+ID: Employee ID (unique identifier).
+Name: Employee Name.
+Salary: Monthly salary of the employee.
+Return a single column named Error representing the difference.
+
+===>Solution
+The SQL query to solve the problem is:
+
+SELECT 
+    CEIL(ABS(AVG(Salary) - AVG(CAST(REPLACE(Salary, '0', '') AS UNSIGNED)))) AS Error
+FROM 
+    EMPLOYEES;
+
+===>Explanation
+- AVG(Salary): Calculates the actual average salary from the Salary column.
+- REPLACE(Salary, '0', ''): Removes all zeros from each salary value as per Samantha s miscalculation.
+- CAST(... AS UNSIGNED): Converts the modified salary values (without zeros) to numbers for calculation.
+- AVG(...): Computes the average of the modified salary values.
+- ABS(...): Takes the absolute difference between the actual and miscalculated averages.
+- CEIL(...): Rounds up the result to the next integer.
+- AS Error: Assigns a meaningful name to the result column.
+
+===>Test Cases
+Test Case 1: Standard Data
+Input Data:
+
+ID	Name	Salary
+1	Alice	10000
+2	Bob	20000
+3	Charlie	30000
+
+===>Query:
+
+SELECT CEIL(ABS(AVG(Salary) - AVG(CAST(REPLACE(Salary, '0', '') AS UNSIGNED)))) AS Error
+FROM EMPLOYEES;
+
+===>Expected Output:
+Error
+1500
+
+===>Test Case 2: Salaries with No Zeros
+Input Data:
+
+ID	Name	Salary
+1	Alice	12345
+2	Bob	23456
+3	Charlie	34567
+
+===>Query:
+
+SELECT CEIL(ABS(AVG(Salary) - AVG(CAST(REPLACE(Salary, '0', '') AS UNSIGNED)))) AS Error
+FROM EMPLOYEES;
+
+===>Expected Output:
+
+Error
+0
