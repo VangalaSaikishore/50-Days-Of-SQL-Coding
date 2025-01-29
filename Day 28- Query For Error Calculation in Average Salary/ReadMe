@@ -1,0 +1,63 @@
+===> Problem Statement:
+Samantha calculated the average monthly salaries for employees but later realized her keyboard '0' key was broken. 
+This caused all salaries entered to have zeros removed (e.g., "1500" became "15"). 
+We need to find the absolute difference between the correct average salary and her miscalculated average, then round the result up to the next integer.
+
+===>Solution:
+
+SELECT CEIL(AVG(salary) - AVG(CAST(REPLACE(CAST(salary AS CHAR), '0', '') AS UNSIGNED))) AS error 
+FROM EMPLOYEES;
+
+===>Explanation:
+- Actual Average Salary: Compute using AVG(salary).
+
+- Miscalculated Salary:
+            - Convert each salary to a string.
+            - Remove all '0' characters using REPLACE().
+            - Convert the result back to a number and compute the average.
+
+- Difference: Subtract the miscalculated average from the actual average.
+
+- Rounding Up: Use CEIL() to round the difference to the next integer (handling cases like 2061.0 → 2061, 2061.1 → 2062).
+
+===>Test Cases:
+Test Case 1:
+Sample Input:
+
+ID	Salary
+1	1000
+2	2000
+3	15000
+
+Miscalculated Salaries: 1, 2, 15
+
+Actual Average: (1000 + 2000 + 15000) / 3 = 6000
+
+Miscalculated Average: (1 + 2 + 15) / 3 = 6
+
+Error: 6000 - 6 = 5994 → CEIL(5994) = 5994
+
+Test Case 2:
+Edge Case (Zero in Salary):
+
+ID	Salary
+1	0
+Miscalculated Salary: 0 → 0 (since removing '0' leaves an empty string, which becomes 0).
+
+Actual Average: 0 → 0
+
+Error: 0 - 0 = 0 → CEIL(0) = 0
+
+Test Case 3:
+Mixed Salaries:
+
+ID	Salary
+1	5040
+2	3020
+Miscalculated Salaries: 54 (5040 → "5040" → "54"), 32 (3020 → "3020" → "32")
+
+Actual Average: (5040 + 3020) / 2 = 4030
+
+Miscalculated Average: (54 + 32) / 2 = 43
+
+Error: 4030 - 43 = 3987 → CEIL(3987) = 3987
