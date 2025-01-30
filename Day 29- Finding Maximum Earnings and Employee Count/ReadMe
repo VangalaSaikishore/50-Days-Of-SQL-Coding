@@ -1,0 +1,63 @@
+===> Problem Statement:
+Given an Employee table containing employee data, we define an employees total earnings as:
+Total Earnings=Months×Salary
+We need to find:
+
+The maximum total earnings among all employees.
+The number of employees who have this maximum total earnings.
+
+===>Solution:
+
+SELECT 
+    MAX(Months * Salary) AS MaxEarnings, 
+    COUNT(*) 
+FROM Employee
+WHERE (Months * Salary) = (SELECT MAX(Months * Salary) FROM Employee);
+
+===> Explanation:
+- MAX(Months * Salary) → Finds the highest total earnings.
+- Subquery (SELECT MAX(Months * Salary) FROM Employee) → Retrieves the max earnings value.
+- WHERE (Months * Salary) = ... → Filters employees who have the max earnings.
+- COUNT(*) → Counts the employees who meet the max earnings criteria.
+
+===>Test Cases:
+Test Case 1: Standard Data
+Input Table (Employee):
+
+Employee_ID	Name	Months	Salary
+1	Alice	10	5000
+2	Bob	12	4000
+3	Charlie	8	6000
+4	David	10	5000
+
+===>Calculations:
+
+Earnings:
+Alice → 10 × 5000 = 50000
+Bob → 12 × 4000 = 48000
+Charlie → 8 × 6000 = 48000
+David → 10 × 5000 = 50000
+Max Earnings: 50000
+Employees with Max Earnings: 2 (Alice & David)
+
+===>Expected Output:
+50000 2
+
+===>Test Case 2: Single Employee with Max Earnings
+Input Table (Employee):
+
+Employee_ID	Name	Months	Salary
+1	Kimberly	14	4996
+2	John	12	4000
+3	Steve	8	6000
+
+===>Calculations:
+
+Kimberly → 14 × 4996 = 69944
+John → 12 × 4000 = 48000
+Steve → 8 × 6000 = 48000
+Max Earnings: 69944
+Employees with Max Earnings: 1 (Kimberly)
+
+===>Expected Output:
+69944 1
