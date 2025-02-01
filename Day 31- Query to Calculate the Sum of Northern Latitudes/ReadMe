@@ -1,0 +1,63 @@
+===> Problem Statement:
+The problem asks for an SQL query that calculates the sum of the LAT_N (Northern Latitudes) values from the STATION table, where the latitudes fall within the range:
+
+Greater than 38.7880
+Less than 137.2345
+The sum of these values should then be truncated to four decimal places.
+
+===>Solution:
+The following SQL query addresses the problem by:
+
+Filtering the records in the STATION table based on the latitude range.
+Using the SUM() function to add the filtered values.
+Applying the TRUNCATE() function to limit the result to four decimal places.
+
+===> Query:
+
+SELECT TRUNCATE(SUM(LAT_N), 4) 
+FROM STATION 
+WHERE LAT_N > 38.7880 AND LAT_N < 137.2345;
+
+===>Explanation:
+- WHERE LAT_N > 38.7880 AND LAT_N < 137.2345: This filters the records to include only those where the LAT_N value is strictly between 38.7880 and 137.2345.
+- SUM(LAT_N): The SUM() function adds all the LAT_N values that meet the criteria.
+- TRUNCATE(SUM(LAT_N), 4): The result of the sum is then truncated to four decimal places to meet the required precision. The TRUNCATE() function ensures that no rounding occurs.
+
+===>Test Cases:
+Test Case 1: Valid Range
+
+Input Data:
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'New York', 'NY', 40.7128, 74.0060),
+(2, 'Los Angeles', 'CA', 34.0522, 118.2437),
+(3, 'Denver', 'CO', 39.7392, 104.9903);
+
+Query:
+
+SELECT TRUNCATE(SUM(LAT_N), 4) 
+FROM STATION 
+WHERE LAT_N > 38.7880 AND LAT_N < 137.2345;
+
+===>Expected Output:
+
+79.4520
+
+- Explanation: The latitudes that meet the criteria are 40.7128, 39.7392. The sum is 40.7128 + 39.7392 = 79.4520, which is already truncated to four decimal places.
+
+===>Test Case 2: No Values in Range
+
+Input Data:
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'Chicago', 'IL', 37.7749, 122.4194),
+(2, 'Austin', 'TX', 30.2672, 97.7431);
+
+===>Query:
+
+SELECT TRUNCATE(SUM(LAT_N), 4) 
+FROM STATION 
+WHERE LAT_N > 38.7880 AND LAT_N < 137.2345;
+
+===>Expected Output:
+NULL
