@@ -1,0 +1,61 @@
+===>Problem Statement:
+Write a SQL query to find the greatest value of the northern latitudes (LAT_N) from the STATION table where:
+
+LAT_N is less than 137.2345.
+The result must be truncated to 4 decimal places.
+
+Input Format
+The STATION table schema is as follows:
+
+Field	Type	Description
+ID	NUMBER	Unique identifier of the station
+CITY	VARCHAR(21)	Name of the city
+STATE	VARCHAR(2)	Abbreviation of the state
+LAT_N	NUMBER	Northern latitude of the station
+LONG_W	NUMBER	Western longitude of the station
+
+===>Output Format
+A single numeric value representing the greatest LAT_N value that is less than 137.2345, truncated to 4 decimal places.
+
+===>Solution:
+
+SELECT TRUNCATE(MAX(LAT_N), 4) AS greatest_lat_n
+FROM STATION
+WHERE LAT_N < 137.2345;
+
+===>Explanation:
+Filter Data Using WHERE Clause
+The query selects rows where the northern latitude (LAT_N) satisfies the condition:
+
+LAT_N < 137.2345
+Aggregate Function (MAX)
+The MAX function identifies the greatest value of LAT_N from the filtered rows.
+
+Truncate Result (TRUNCATE)
+The TRUNCATE function ensures the output has exactly 4 decimal places.
+
+Alias (AS)
+Assigns a user-friendly column name (greatest_lat_n) for the result.
+
+===>Test Cases:
+Test Case 1: Valid Input
+Input Table
+
+ID	CITY	STATE	LAT_N	LONG_W
+1	CityA	AA	45.1234	70.4567
+2	CityB	BB	60.5678	80.1234
+3	CityC	CC	90.2345	90.5432
+4	CityD	DD	137.5000	100.6789
+
+===>Expected Output:
+90.2345
+
+===>Test Case 2: No Matching Rows
+Input Table
+
+ID	CITY	STATE	LAT_N	LONG_W
+1	CityA	AA	150.1234	60.4567
+2	CityB	BB	200.5678	70.1234
+
+===>Expected Output
+NULL
