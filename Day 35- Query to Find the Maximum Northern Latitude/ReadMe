@@ -1,0 +1,60 @@
+===> Problem Statement
+Given the STATION table, we need to find the highest value of LAT_N (Northern Latitude) that is strictly less than 137.235. The result should be truncated to four decimal places.
+
+===> Solution:
+The following SQL query achieves the required result:
+
+SELECT TRUNCATE(MAX(LAT_N), 4)
+FROM STATION
+WHERE LAT_N < 137.235;
+
+===>Explanation:
+- WHERE LAT_N < 137.235
+Filters out all values of LAT_N that are greater than or equal to 137.235, ensuring only values below this threshold are considered.
+
+- MAX(LAT_N)
+Retrieves the maximum latitude value from the filtered results.
+
+- TRUNCATE(MAX(LAT_N), 4)
+Truncates the result to four decimal places to ensure precision without rounding.
+
+===> Test Cases
+Test Case 1: Valid Data with Multiple Matches
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'Los Angeles', 'CA', 40.7128, 74.0060),
+(2, 'Denver', 'CO', 39.7392, 104.9903),
+(3, 'Seattle', 'WA', 136.9876, 122.4194),
+(4, 'San Francisco', 'CA', 137.5000, 97.7431);
+
+===> Query
+SELECT TRUNCATE(MAX(LAT_N), 4)
+FROM STATION
+WHERE LAT_N < 137.235;
+
+===> Expected Output:
+136.9876
+
+===>Explanation
+The available LAT_N values below 137.235 are 40.7128, 39.7392, and 136.9876.
+The maximum among them is 136.9876, and truncation doesn not alter it.
+
+===>Test Case 2: No Matching Values
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'Miami', 'FL', 137.4000, 80.1918),
+(2, 'Boston', 'MA', 137.6000, 71.0589);
+
+===>Query:
+
+SELECT TRUNCATE(MAX(LAT_N), 4)
+FROM STATION
+WHERE LAT_N < 137.235;
+
+===>Expected Output
+NULL
+
+===>Explanation
+Since all LAT_N values are above 137.235, no matching values exist, and the query returns NULL.
