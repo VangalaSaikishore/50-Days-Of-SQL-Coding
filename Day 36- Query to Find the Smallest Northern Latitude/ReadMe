@@ -1,0 +1,67 @@
+===> Problem Statement
+You are given a database table named STATION with the following schema:
+
+Column Name	Data Type	Description
+ID	INTEGER	Unique identifier for the station
+CITY	VARCHAR	Name of the city
+STATE	VARCHAR	Name of the state
+LAT_N	DECIMAL(10,4)	The northern latitude of the station
+LONG_W	DECIMAL(10,4)	The western longitude of the station
+
+Write a SQL query to find the smallest northern latitude (LAT_N) that is greater than 38.7780. The result should be rounded to 4 decimal places.
+
+===>Solution
+
+SELECT ROUND(MIN(LAT_N), 4) AS Smallest_Latitude
+FROM STATION
+WHERE LAT_N > 38.7780;
+
+===>Explanation
+Objective:
+
+Retrieve the smallest latitude (LAT_N) that is greater than 38.7780.
+
+Steps:
+
+- Use the MIN(LAT_N) function to find the smallest latitude value.
+- Use the WHERE clause to filter rows where LAT_N is greater than 38.7780.
+- Apply the ROUND() function to truncate the result to 4 decimal places.
+- Why ROUND()?
+It ensures that the result matches the precision requirement of 4 decimal places.
+
+===>Test Cases
+Test Case 1:
+Input Data:
+
+ID	CITY	STATE	LAT_N	LONG_W
+1	City A	AA	38.8000	120.1234
+2	City B	BB	39.0000	110.5678
+3	City C	CC	38.5000	100.3456
+
+===>Query:
+SELECT ROUND(MIN(LAT_N), 4) AS Smallest_Latitude
+FROM STATION
+WHERE LAT_N > 38.7780;
+
+===>Expected Output:
+
+Smallest_Latitude
+38.8000
+
+===>Test Case 2:
+Input Data:
+
+ID	CITY	STATE	LAT_N	LONG_W
+1	City A	AA	40.5678	70.1234
+2	City B	BB	41.1234	60.3456
+3	City C	CC	38.7799	50.5678
+
+===>Query:
+
+SELECT ROUND(MIN(LAT_N), 4) AS Smallest_Latitude
+FROM STATION
+WHERE LAT_N > 38.7780;
+
+===>Expected Output:
+Smallest_Latitude
+38.7799
