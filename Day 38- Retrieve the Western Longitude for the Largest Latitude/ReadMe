@@ -1,0 +1,70 @@
+===>Problem Statement:
+You are given a STATION table with multiple entries. Your task is to find the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) that is less than 137.2345. The result should be rounded to 4 decimal places.
+
+===>SQL Query:
+
+SELECT ROUND(LONG_W, 4) 
+FROM STATION 
+WHERE LAT_N = (
+    SELECT MAX(LAT_N) 
+    FROM STATION 
+    WHERE LAT_N < 137.2345
+);
+
+===>Explanation:
+Find the Maximum LAT_N Less Than 137.2345
+
+SELECT MAX(LAT_N) 
+FROM STATION 
+WHERE LAT_N < 137.2345;
+
+This retrieves the largest latitude value (LAT_N) that is strictly less than 137.2345.
+Find the Corresponding LONG_W for That Latitude
+
+SELECT ROUND(LONG_W, 4)
+FROM STATION
+WHERE LAT_N = (subquery);
+
+This retrieves the Western Longitude (LONG_W) associated with the largest valid LAT_N.
+ROUND(LONG_W, 4) ensures that the longitude is rounded to 4 decimal places.
+
+===>Test Cases:
+Test Case 1: Valid Data with Multiple Matches
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'Los Angeles', 'CA', 40.7128, 74.0060),
+(2, 'Denver', 'CO', 39.7392, 104.9903),
+(3, 'Seattle', 'WA', 136.9876, 122.4194),
+(4, 'San Francisco', 'CA', 137.5000, 97.7431);
+
+===>Query Execution:
+
+SELECT ROUND(LONG_W, 4)
+FROM STATION
+WHERE LAT_N = (
+    SELECT MAX(LAT_N) 
+    FROM STATION 
+    WHERE LAT_N < 137.2345
+);
+
+===>Expected Output:
+
+122.4194
+
+===>Explanation:
+- The largest LAT_N below 137.2345 is 136.9876.
+- The corresponding LONG_W is 122.4194, which is rounded to four decimal places.
+
+===>Test Case 2: No Matching Values
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'Miami', 'FL', 137.4000, 80.1918),
+(2, 'Boston', 'MA', 137.6000, 71.0589);
+
+===>Expected Output
+NULL
+
+===>Explanation
+Since all LAT_N values are above 137.2345, there is no match, and the query returns NULL.
