@@ -1,0 +1,62 @@
+===>Problem Statement:
+Given a STATION table, retrieve the Western Longitude (LONG_W) for the smallest Northern Latitude (LAT_N) that is strictly greater than 38.7780. The result should be rounded to four decimal places.
+
+===>Input Format:
+The STATION table has the following structure:
+
+Column Name	Data Type	Description
+ID	INTEGER	Unique identifier for each station
+CITY	VARCHAR	Name of the city
+STATE	VARCHAR	State abbreviation
+LAT_N	DECIMAL	Latitude (Northern Hemisphere)
+LONG_W	DECIMAL	Longitude (Western Hemisphere)
+
+===>SQL Query:
+
+SELECT ROUND(LONG_W, 4)
+FROM STATION
+WHERE LAT_N = (
+    SELECT MIN(LAT_N) 
+    FROM STATION 
+    WHERE LAT_N > 38.7780
+);
+
+===>Explanation:
+Find the Smallest LAT_N Above 38.7780
+
+SELECT MIN(LAT_N) 
+FROM STATION 
+WHERE LAT_N > 38.7780;
+
+Retrieves the smallest latitude that is strictly greater than 38.7780.
+Retrieve the Corresponding LONG_W
+
+SELECT ROUND(LONG_W, 4)
+FROM STATION
+WHERE LAT_N = (subquery);
+
+Finds the longitude (LONG_W) associated with the latitude from Step 1.
+Uses ROUND(LONG_W, 4) to ensure the result is rounded to four decimal places.
+
+===>Example Test Cases:
+Test Case 1: Valid Data with Multiple Entries
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'New York', 'NY', 40.7128, 74.0060),
+(2, 'Denver', 'CO', 39.7392, 104.9903),
+(3, 'Seattle', 'WA', 38.7790, 122.4194),
+(4, 'San Francisco', 'CA', 38.7781, 97.7431);
+
+===>Query Execution Output:
+97.7431
+
+===>Test Case 2: No Matching Values
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'Miami', 'FL', 38.7775, 80.1918),
+(2, 'Boston', 'MA', 38.7779, 71.0589);
+
+===>Expected Output:
+NULL
