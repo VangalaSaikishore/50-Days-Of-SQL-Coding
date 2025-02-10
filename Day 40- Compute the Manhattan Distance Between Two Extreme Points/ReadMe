@@ -1,0 +1,71 @@
+===>Problem Statement
+Given a STATION table, we define two points on a 2D plane:
+
+Point P1 = (a, b)
+
+a: Minimum Northern Latitude (MIN(LAT_N))
+b: Minimum Western Longitude (MIN(LONG_W))
+Point P2 = (c, d)
+
+c: Maximum Northern Latitude (MAX(LAT_N))
+d: Maximum Western Longitude (MAX(LONG_W))
+The Manhattan Distance between two points (x1, y1) and (x2, y2) is given by:
+
+Manhattan Distance=∣x2−x1∣+∣y2−y1∣
+Your task is to query this Manhattan Distance and round it to four decimal places.
+
+Input Format
+The STATION table is structured as follows:
+
+Column Name	Data Type	Description
+ID	INTEGER	Unique identifier for each station
+CITY	VARCHAR	Name of the city
+STATE	VARCHAR	State abbreviation
+LAT_N	DECIMAL	Latitude (Northern Hemisphere)
+LONG_W	DECIMAL	Longitude (Western Hemisphere)
+
+===>SQL Query
+
+SELECT ROUND(
+    (ABS((SELECT MAX(LAT_N) FROM STATION) - (SELECT MIN(LAT_N) FROM STATION))) +
+    (ABS((SELECT MAX(LONG_W) FROM STATION) - (SELECT MIN(LONG_W) FROM STATION))), 4
+) AS manhattan_distance;
+
+===>Explanation
+- Find the Minimum and Maximum Latitude (LAT_N)
+- MIN(LAT_N): Finds the smallest latitude.
+- MAX(LAT_N): Finds the largest latitude.
+- Find the Minimum and Maximum Longitude (LONG_W)
+- MIN(LONG_W): Finds the smallest longitude.
+- MAX(LONG_W): Finds the largest longitude.
+- Calculate the Manhattan Distance
+- Compute the absolute difference in latitude: | \text{MAX(LAT_N)} - \text{MIN(LAT_N)} |
+- Compute the absolute difference in longitude: | \text{MAX(LONG_W)} - \text{MIN(LONG_W)} |
+- Sum both differences to get the Manhattan Distance.
+- Round to Four Decimal Places
+- Use ROUND(..., 4) to ensure precision.
+
+===>Test Cases
+Test Case 1: Normal Scenario
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'New York', 'NY', 40.7128, 74.0060),
+(2, 'Los Angeles', 'CA', 34.0522, 118.2437),
+(3, 'Chicago', 'IL', 41.8781, 87.6298),
+(4, 'Houston', 'TX', 29.7604, 95.3698);
+
+===>Query Execution Output
+
+22.4585
+
+===>Test Case 2: All Coordinates are the Same
+Input Data
+sql
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'CityA', 'XX', 50.0000, 100.0000),
+(2, 'CityB', 'YY', 50.0000, 100.0000);
+
+===>Expected Output
+0.0000
