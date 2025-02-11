@@ -1,0 +1,79 @@
+===>Problem Statement
+Given a STATION table, we define two points on a 2D plane:
+
+Point P1 = (a, c)
+
+a: Minimum Northern Latitude (MIN(LAT_N))
+c: Minimum Western Longitude (MIN(LONG_W))
+Point P2 = (b, d)
+
+b: Maximum Northern Latitude (MAX(LAT_N))
+d: Maximum Western Longitude (MAX(LONG_W))
+The Euclidean Distance between two points (x1,y1) and (x2,y2)is given by:
+Euclidean Distance= sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+
+Your task is to query this Euclidean Distance and format the result to display 4 decimal digits.
+
+Input Format
+The STATION table is structured as follows:
+
+Column Name	Data Type	Description
+ID	INTEGER	Unique identifier for each station
+CITY	VARCHAR	Name of the city
+STATE	VARCHAR	State abbreviation
+LAT_N	DECIMAL	Latitude (Northern Hemisphere)
+LONG_W	DECIMAL	Longitude (Western Hemisphere)
+
+===>SQL Query
+
+SELECT FORMAT(
+    SQRT(
+        POW((SELECT MAX(LAT_N) FROM STATION) - (SELECT MIN(LAT_N) FROM STATION), 2) +
+        POW((SELECT MAX(LONG_W) FROM STATION) - (SELECT MIN(LONG_W) FROM STATION), 2)
+    ), 4
+) AS euclidean_distance;
+
+===>Explanation
+Find the Minimum and Maximum Latitude (LAT_N)
+
+- MIN(LAT_N): Finds the smallest latitude.
+- MAX(LAT_N): Finds the largest latitude.
+
+Find the Minimum and Maximum Longitude (LONG_W)
+- MIN(LONG_W): Finds the smallest longitude.
+- MAX(LONG_W): Finds the largest longitude.
+
+Compute the Euclidean Distance
+
+- Compute the difference in latitudes: ({MAX(LAT_N)} - {MIN(LAT_N)})^2
+- Compute the difference in longitudes: ({MAX(LONG_W)} - {MIN(LONG_W)})^2
+
+Sum both squared differences and take the square root to get the Euclidean distance.
+Format the Result
+Use FORMAT(..., 4) to ensure the result displays 4 decimal places.
+
+===>Example Test Cases
+Test Case 1: Normal Scenario
+Input Data
+sql
+Copy
+Edit
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'New York', 'NY', 40.7128, 74.0060),
+(2, 'Los Angeles', 'CA', 34.0522, 118.2437),
+(3, 'Chicago', 'IL', 41.8781, 87.6298),
+(4, 'Houston', 'TX', 29.7604, 95.3698);
+
+===>Query Execution Output
+
+47.3982
+
+===>Test Case 2: All Coordinates are the Same
+Input Data
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'CityA', 'XX', 50.0000, 100.0000),
+(2, 'CityB', 'YY', 50.0000, 100.0000);
+
+===>Expected Output
+0.0000
