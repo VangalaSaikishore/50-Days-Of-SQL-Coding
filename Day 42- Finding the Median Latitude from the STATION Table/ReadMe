@@ -1,0 +1,75 @@
+===> Problem Statement
+Given a STATION table, we need to find the median of the Northern Latitudes (LAT_N).
+A median is defined as the value separating the higher half from the lower half of a dataset.
+
+If the number of records is odd, the median is the middle value.
+If the number of records is even, the median is the average of the two middle values.
+Your task is to query the median of LAT_N and round the result to 4 decimal places.
+
+Input Format
+The STATION table is structured as follows:
+
+Column Name	Data Type	Description
+ID	INTEGER	Unique identifier for each station
+CITY	VARCHAR	Name of the city
+STATE	VARCHAR	State abbreviation
+LAT_N	DECIMAL	Latitude (Northern Hemisphere)
+LONG_W	DECIMAL	Longitude (Western Hemisphere)
+
+===> SQL Query
+
+WITH Ordered AS (
+    SELECT 
+        LAT_N, 
+        ROW_NUMBER() OVER (ORDER BY LAT_N) AS row_num,
+        COUNT(*) OVER () AS total_rows
+    FROM STATION
+)
+SELECT ROUND(AVG(LAT_N), 4) AS median_latitude
+FROM Ordered
+WHERE row_num IN (FLOOR((total_rows + 1) / 2), CEIL((total_rows + 1) / 2));
+
+===> Explanation
+- Step 1: Order the LAT_N Values
+1. Use ORDER BY LAT_N to arrange latitude values in ascending order.
+2. Assign row numbers using ROW_NUMBER() OVER (ORDER BY LAT_N).
+3. Use COUNT(*) OVER () to get the total number of records.
+
+- Step 2: Find the Median Latitude (LAT_N)
+1. If total_rows is odd, select the middle value: \text{Median} = \text{LAT_N at } \left(\frac{total\_rows + 1}{2}\right)
+2. If total_rows is even, take the average of the two middle values: \text{Median} = \frac{\text{LAT_N at } \left(\frac{total\_rows}{2}\right) + \text{LAT_N at } \left(\frac{total\_rows}{2} + 1\right)}{2}
+
+- Step 3: Query for the Median
+1. Use FLOOR((total_rows + 1) / 2) and CEIL((total_rows + 1) / 2) to select the correct row(s).
+2. Use AVG(LAT_N) to compute the median if there are two middle values.
+
+- Step 4: Format the Result
+1. Use ROUND(..., 4) to ensure the result is displayed to 4 decimal places.
+
+===> Example Test Cases
+Test Case 1: Odd Number of Records
+Input Data:
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'New York', 'NY', 40.7128, 74.0060),
+(2, 'Los Angeles', 'CA', 34.0522, 118.2437),
+(3, 'Chicago', 'IL', 41.8781, 87.6298),
+(4, 'Houston', 'TX', 29.7604, 95.3698),
+(5, 'Miami', 'FL', 25.7617, 80.1918);
+
+Query Execution Output:
+
+40.7128
+
+Test Case 2: Even Number of Records
+Input Data:
+
+INSERT INTO STATION (ID, CITY, STATE, LAT_N, LONG_W) VALUES 
+(1, 'Boston', 'MA', 42.3601, 71.0589),
+(2, 'San Diego', 'CA', 32.7157, 117.1611),
+(3, 'Seattle', 'WA', 47.6062, 122.3321),
+(4, 'Denver', 'CO', 39.7392, 104.9903);
+
+Expected Output:
+
+41.0497  -- Average of (39.7392 and 42.3601)
