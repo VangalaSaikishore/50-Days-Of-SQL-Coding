@@ -1,0 +1,68 @@
+===>Problem Statement:
+Given two tables, CITY and COUNTRY, write an SQL query to calculate the total population of all cities located in the continent 'Asia'. The tables are related by CITY.CountryCode and COUNTRY.Code.
+
+===>Solution:
+
+SELECT SUM(CITY.Population) AS TotalPopulation
+FROM CITY
+JOIN COUNTRY
+ON CITY.CountryCode = COUNTRY.Code
+WHERE COUNTRY.Continent = 'Asia';
+
+===>Explanation:
+
+- The JOIN clause combines the CITY and COUNTRY tables based on the common key: CITY.CountryCode = COUNTRY.Code.
+- The WHERE clause filters the data to include only rows where the Continent is 'Asia'.
+- The SUM function adds up the Population of all the selected cities.
+- The result is displayed under the alias TotalPopulation.
+
+===>Test Cases with Examples:
+
+Test Case 1:
+Input Data:
+
+CITY Table:
+| ID | Name | CountryCode | Population |
+|----|--------|-------------|------------|
+| 1 | Tokyo | JPN | 37400068 |
+| 2 | Mumbai | IND | 20411000 |
+| 3 | Paris | FRA | 11020000 |
+
+COUNTRY Table:
+| Code | Name | Continent |
+|------|----------|-----------|
+| JPN | Japan | Asia |
+| IND | India | Asia |
+| FRA | France | Europe |
+
+===>Expected Output:
+
+57811068
+
+===>Explanation:
+
+The cities in Asia are Tokyo (37,400,068) and Mumbai (20,411,000). Their sum is 37,400,068 + 20,411,000 = 57,811,068.
+
+===>Test Case 2:
+Input Data:
+
+CITY Table:
+| ID | Name | CountryCode | Population |
+|--------------------------------------|
+| 1 | Shanghai | CHN | 24150000 |
+| 2 | Karachi | PAK | 15741000 |
+| 3 | New York | USA | 8175133 |
+
+COUNTRY Table:
+| Code | Name | Continent |
+|-----|-------|-----------|
+| CHN | China | Asia |
+| PAK | Pakistan | Asia |
+| USA | USA | North America |
+
+===>Expected Output:
+
+39891000
+
+===>Explanation:
+The cities in Asia are Shanghai (24,150,000) and Karachi (15,741,000). Their sum is 24,150,000 + 15,741,000 = 39,891,000.
