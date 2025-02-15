@@ -1,0 +1,76 @@
+===> Problem Statement
+Given the CITY and COUNTRY tables, write an SQL query to retrieve the names of all cities where the CONTINENT is 'Africa'.
+
+Table Structures
+
+CITY Table
+
+Column Name	Data Type	Description
+ID	INTEGER	Unique identifier for each city
+NAME	VARCHAR	Name of the city
+COUNTRYCODE	VARCHAR	Country code (matches COUNTRY.Code)
+POPULATION	INTEGER	Population of the city
+
+COUNTRY Table
+
+Column Name	Data Type	Description
+CODE	VARCHAR	Unique country code
+NAME	VARCHAR	Name of the country
+CONTINENT	VARCHAR	Continent where the country is located
+
+===>SQL Query
+
+SELECT CITY.NAME
+FROM CITY
+JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE
+WHERE COUNTRY.CONTINENT = 'Africa';
+
+===> Explanation
+- Join CITY and COUNTRY tables
+CITY.COUNTRYCODE = COUNTRY.CODE ensures we only match cities with their corresponding countries.
+
+- Filter by Continent
+WHERE COUNTRY.CONTINENT = 'Africa' ensures that only cities from African countries are included in the result.
+
+===>Example Test Cases
+Test Case 1: General Case
+Input Data
+
+CITY Table
+ID	NAME	COUNTRYCODE	POPULATION
+1	Lagos	NGA	9000000
+2	Cairo	EGY	9500000
+3	Nairobi	KEN	4400000
+4	Mumbai	IND	12600000
+
+COUNTRY Table
+CODE	NAME	CONTINENT
+NGA	Nigeria	Africa
+EGY	Egypt	Africa
+KEN	Kenya	Africa
+IND	India	Asia
+
+===>Expected Output
+
+NAME
+Lagos
+Cairo
+Nairobi
+
+===>Test Case 2: No African Cities
+Input Data
+
+CITY Table
+
+ID	NAME	COUNTRYCODE	POPULATION
+1	Beijing	CHN	21500000
+2	Tokyo	JPN	14000000
+
+COUNTRY Table
+
+CODE	NAME	CONTINENT
+CHN	China	Asia
+JPN	Japan	Asia
+
+===>Expected Output
+No rows returned
