@@ -1,0 +1,87 @@
+===> Problem Statement
+Given the CITY and COUNTRY tables, we need to query the names of all continents (COUNTRY.Continent) and their respective average city populations (CITY.Population). The result should be rounded down to the nearest integer.
+
+Key Considerations:
+The CITY table contains city population data.
+The COUNTRY table contains continent information.
+The CITY.CountryCode column and the COUNTRY.Code column are the matching keys.
+The result should display each continent with its average city population, rounded down.
+
+Input Format
+The tables are structured as follows:
+
+CITY Table
+Column Name	Data Type	Description
+ID	INTEGER	Unique identifier for each city
+Name	VARCHAR	Name of the city
+CountryCode	VARCHAR	Code corresponding to the country
+Population	INTEGER	Population of the city
+
+COUNTRY Table
+Column Name	Data Type	Description
+Code	VARCHAR	Unique country code
+Name	VARCHAR	Name of the country
+Continent	VARCHAR	Name of the continent
+
+===>SQL Query
+
+SELECT co.Continent, FLOOR(AVG(ci.Population)) AS Average_Population
+FROM CITY ci
+JOIN COUNTRY co ON ci.CountryCode = co.Code
+GROUP BY co.Continent;
+
+===>Explanation
+- Step 1: Join CITY and COUNTRY Tables
+The JOIN operation connects CITY and COUNTRY tables based on the common key CITY.CountryCode = COUNTRY.Code.
+
+- Step 2: Calculate Average Population for Each Continent
+The AVG(ci.Population) function computes the average population for cities within each continent.
+
+- Step 3: Round Down to the Nearest Integer
+The FLOOR() function ensures the result is rounded down to the nearest whole number.
+
+- Step 4: Group by Continent
+The GROUP BY co.Continent ensures the aggregation is done per continent.
+
+===> Example Test Cases
+Test Case 1: Normal Scenario
+
+CITY Table
+
+ID	Name	CountryCode	Population
+1	Lagos	NGA	9000000
+2	Cairo	EGY	9500000
+3	Mumbai	IND	12000000
+4	Shanghai	CHN	24000000
+5	Nairobi	KEN	4300000
+
+COUNTRY Table
+Code	Name	Continent
+NGA	Nigeria	Africa
+EGY	Egypt	Africa
+IND	India	Asia
+CHN	China	Asia
+KEN	Kenya	Africa
+
+===>Expected Output
+Continent	Average_Population
+Africa	7600000
+Asia	18000000
+
+===>Test Case 2: Only One City in Each Continent
+Input Data
+CITY Table
+
+ID	Name	CountryCode	Population
+1	Tokyo	JPN	14000000
+2	Sydney	AUS	5000000
+COUNTRY Table
+
+Code	Name	Continent
+JPN	Japan	Asia
+AUS	Australia	Oceania
+
+===>Expected Output
+Continent	Average_Population
+Asia	14000000
+Oceania	5000000
