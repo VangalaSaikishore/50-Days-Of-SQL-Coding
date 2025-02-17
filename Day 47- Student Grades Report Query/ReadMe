@@ -1,0 +1,102 @@
+===>Problem Statement
+Given two tables, Students and Grades, generate a report with the following columns: Name, Grade, and Marks.
+
+===>Report Requirements:
+Display only students with Grade ≥ 8 along with their names.
+If a students Grade < 8, display "NULL"** as the Name** instead.
+
+===>Sorting Order:
+- Sort primarily by Grade in descending order.
+- If multiple students have the same Grade ≥ 8, sort them alphabetically by name.
+- If multiple students have the same Grade < 8, sort them in ascending order by marks.
+
+===>Table Schema
+
+Students Table
+Column Name	Data Type	Description
+ID	INTEGER	Unique student ID
+Name	VARCHAR	Student name
+Marks	INTEGER	Student marks
+
+Grades Table
+Column Name	Data Type	Description
+Grade	INTEGER	Grade assigned
+Min_Mark	INTEGER	Minimum marks for the grade
+Max_Mark	INTEGER	Maximum marks for the grade
+
+===>SQL Query
+
+SELECT 
+    CASE 
+        WHEN g.Grade < 8 THEN 'NULL' 
+        ELSE s.Name 
+    END AS Name, 
+    g.Grade, 
+    s.Marks
+FROM Students s
+JOIN Grades g 
+ON s.Marks BETWEEN g.Min_Mark AND g.Max_Mark
+ORDER BY g.Grade DESC, 
+         (CASE WHEN g.Grade >= 8 THEN s.Name END) ASC, 
+         (CASE WHEN g.Grade < 8 THEN s.Marks END) ASC;
+
+===>Explanation
+- Step 1: Join Students and Grades Tables
+The JOIN is performed using the Marks column, where Marks falls between Min_Mark and Max_Mark.
+
+- Step 2: Use CASE to Display Name or "NULL"
+If the Grade ≥ 8, display the students name.
+If the Grade < 8, display "NULL" as the name.
+
+- Step 3: Apply Sorting Rules
+First, sort by Grade in descending order.
+For students with Grade ≥ 8, sort alphabetically by Name.
+For students with Grade < 8, sort by Marks in ascending order.
+
+===>Sample Test Cases
+Test Case 1: Normal Scenario
+
+- Input Data
+Students Table
+ID	Name	Marks
+1	Maria	99
+2	Jane	81
+3	Julia	88
+4	Scarlet	78
+5	Paul	63
+6	Tom	68
+
+Grades Table
+Grade	Min_Mark	Max_Mark
+10	90	100
+9	80	89
+8	70	79
+7	60	69
+
+===>Expected Output
+Name	Grade	Marks
+Maria	10	99
+Jane	9	81
+Julia	9	88
+Scarlet	8	78
+NULL	7	63
+NULL	7	68
+
+===>Test Case 2: All Grades Below 8
+Input Data
+Students Table
+ID	Name	Marks
+1	Alex	50
+2	John	45
+3	Max	55
+
+Grades Table
+Grade	Min_Mark	Max_Mark
+7	60	69
+6	50	59
+5	40	49
+
+===>Expected Output
+Name	Grade	Marks
+NULL	6	50
+NULL	5	45
