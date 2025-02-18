@@ -1,0 +1,126 @@
+===> Problem Statement:
+Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard. Your task is to write a query that prints the respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores in the same number of challenges, then sort them by ascending hacker_id.
+
+===>Input Format:
+You are given four tables containing contest data:
+
+===>Hackers table:
+
+hacker_id (INTEGER): The ID of the hacker.
+name (STRING): The name of the hacker.
+
+===>Difficulty table:
+
+- difficulty_level (INTEGER): The level of difficulty of the challenge.
+- score (INTEGER): The maximum score that can be achieved for a challenge at that difficulty level.
+
+===>Challenges table:
+
+- challenge_id (INTEGER): The ID of the challenge.
+- hacker_id (INTEGER): The ID of the hacker who created the challenge.
+- difficulty_level (INTEGER): The level of difficulty of the challenge.
+
+===>Submissions table:
+
+- submission_id (INTEGER): The ID of the submission.
+- hacker_id (INTEGER): The ID of the hacker who made the submission.
+- challenge_id (INTEGER): The ID of the challenge that the submission belongs to.
+- score (INTEGER): The score of the submission.
+
+===>Output Format:
+Print the hacker_id and name of the hackers who achieved full scores in more than one challenge.
+The result should be sorted in descending order by the total number of challenges in which the hacker earned a full score. In case of ties, sort by hacker_id in ascending order.
+
+===>Solution:
+
+SELECT h.hacker_id, h.name
+FROM Hackers h
+JOIN Submissions s ON h.hacker_id = s.hacker_id
+JOIN Challenges c ON s.challenge_id = c.challenge_id
+JOIN Difficulty d ON c.difficulty_level = d.difficulty_level
+WHERE s.score = d.score  -- Only full scores
+GROUP BY h.hacker_id, h.name
+HAVING COUNT(DISTINCT c.challenge_id) > 1  -- More than one full score
+ORDER BY COUNT(DISTINCT c.challenge_id) DESC, h.hacker_id ASC;
+
+===>Explanation:
+Joins:
+- We join the Hackers table with the Submissions table using hacker_id to associate each submission with its respective hacker.
+- We join the Challenges table to get the challenge details using challenge_id.
+- We join the Difficulty table to get the maximum score for each challenge based on its difficulty level.
+
+Filtering full scores:
+- We filter the submissions where the score in the Submissions table matches the maximum score for that challenge using s.score = d.score.
+
+Grouping:
+- We group the results by hacker_id and name so we can count how many distinct challenges each hacker has achieved a full score in.
+
+Having Condition:
+- We use HAVING COUNT(DISTINCT c.challenge_id) > 1 to only include hackers who achieved full scores for more than one challenge.
+
+Ordering:
+- We order the results by the number of challenges in descending order and, in case of ties, by hacker_id in ascending order.
+
+Test Cases:
+Test Case 1:
+Input:
+
+Hackers Table:  
+hacker_id | name  
+86870     | Alice  
+90411     | Joe  
+
+Difficulty Table:  
+difficulty_level | score  
+2                | 30  
+6                | 100  
+
+Challenges Table:  
+challenge_id | hacker_id | difficulty_level  
+71055        | 86870     | 2  
+66730        | 90411     | 6  
+71055        | 90411     | 2  
+
+Submissions Table:  
+submission_id | hacker_id | challenge_id | score  
+101           | 86870     | 71055        | 30  
+102           | 90411     | 71055        | 30  
+103           | 90411     | 66730        | 100  
+
+Output:
+90411 Joe
+
+===>Explanation:
+
+- Hacker 86870 (Alice) earned a full score for challenge 71055.
+- Hacker 90411 (Joe) earned full scores for both challenges 71055 and 66730.
+- Only hacker 90411 achieved full scores in more than one challenge, so the output is 90411 Joe.
+
+Test Case 2:
+Input:
+
+Hackers Table:  
+hacker_id | name  
+12345     | Sarah  
+67890     | John  
+
+Difficulty Table:  
+difficulty_level | score  
+2                | 30  
+4                | 50  
+
+Challenges Table:  
+challenge_id | hacker_id | difficulty_level  
+12345        | 12345     | 2  
+67890        | 67890     | 4  
+
+Submissions Table:  
+submission_id | hacker_id | challenge_id | score  
+201           | 12345     | 12345        | 30  
+202           | 67890     | 67890        | 50  
+
+===>Output:
+
+Explanation:
+No hacker achieved a full score for more than one challenge.
+Therefore, the output is empty.
