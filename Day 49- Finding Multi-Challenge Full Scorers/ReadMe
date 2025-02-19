@@ -1,0 +1,88 @@
+===>Problem Statement
+Harry Potter and his friends are at Ollivander's with Ron, who is finally replacing Charlie's old broken wand. Hermione decides that the best way to choose a wand is by determining the minimum number of gold galleons needed to buy each non-evil wand with the highest power and age.
+
+Write an SQL query to retrieve the wand’s id, age, coins_needed, and power, ensuring that:
+
+Only non-evil wands (is_evil = 0) are considered.
+Each (age, power) pair has the wand with the minimum coins_needed.
+The results are sorted:
+First, by power in descending order (higher power first).
+If multiple wands have the same power, sort by age in descending order (older first).
+
+===>Solution
+SQL Query
+
+SELECT w.id, wp.age, w.coins_needed, w.power
+FROM Wands w
+JOIN Wands_Property wp ON w.code = wp.code
+WHERE wp.is_evil = 0
+AND w.coins_needed = (SELECT MIN(w1.coins_needed) 
+                      FROM Wands w1 
+                      WHERE w1.power = w.power AND w1.code = w.code)
+ORDER BY w.power DESC, wp.age DESC;
+
+===>Explanation
+Joining Tables:
+- The Wands table contains wand details (id, code, coins_needed, power).
+- The Wands_Property table contains wand properties (code, age, is_evil).
+- We join them on code since each wand’s code is uniquely mapped to age.
+
+Filtering Out Evil Wands:
+- We use wp.is_evil = 0 to ensure we only select non-evil wands.
+- Selecting the Minimum coins_needed for Each (age, power) Pair:
+- The subquery ensures that for each (power, code), we pick the wand with the lowest coins_needed.
+- This prevents duplicate power-age pairs while ensuring we get the cheapest wand available.
+
+Sorting the Results:
+- First, by power in descending order (ORDER BY w.power DESC).
+- If multiple wands have the same power, they are sorted by age in descending order (wp.age DESC).
+
+===>Test Cases:
+Test Case 1: Sample Input
+Wands Table
+id	code	coins_needed	power
+1	20	3688	8
+5	45	6020	2
+9	45	1647	10
+10	20	504	5
+11	40	7587	5
+12	17	9897	10
+14	40	5408	1
+15	40	6018	7
+18	40	3312	3
+19	20	7651	6
+20	17	5689	3
+
+Wands_Property Table
+code	age	is_evil
+1	45	0
+2	40	0
+4	20	0
+5	17	0
+
+===>Expected Output
+id	age	coins_needed	power
+9	45	1647	10
+12	17	9897	10
+1	20	3688	8
+15	40	6018	7
+19	20	7651	6
+11	40	7587	5
+10	20	504	5
+18	40	3312	3
+20	17	5689	3
+5	45	6020	2
+14	40	5408	1
+
+Test Case 2: Edge Case (All Evil Wands)
+Wands Table
+id	code	coins_needed	power
+1	10	1000	5
+2	20	2000	6
+Wands_Property Table
+code	age	is_evil
+10	25	1
+20	30	1
+
+===>Expected Output
+Since all wands are evil (is_evil = 1), the output should be empty.
