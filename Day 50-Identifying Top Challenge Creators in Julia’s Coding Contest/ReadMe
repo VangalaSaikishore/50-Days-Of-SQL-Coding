@@ -1,0 +1,125 @@
+===>Problem Statement:
+Julia asked her students to create coding challenges. You need to write a SQL query to display the hacker_id, name, and the total number of challenges created by each student.
+
+Sort the results in descending order of the total number of challenges created.
+If multiple students created the same number of challenges, sort them in ascending order of hacker_id.
+Exclude students who did not create the maximum number of challenges if they have the same count as others.
+
+===>Solution (SQL Query):
+
+WITH ChallengeCounts AS (
+    SELECT c.hacker_id, h.name, COUNT(c.challenge_id) AS total_challenges
+    FROM Challenges c
+    JOIN Hackers h ON c.hacker_id = h.hacker_id
+    GROUP BY c.hacker_id, h.name
+),
+MaxChallenges AS (
+    SELECT MAX(total_challenges) AS max_challenges FROM ChallengeCounts
+)
+SELECT cc.hacker_id, cc.name, cc.total_challenges
+FROM ChallengeCounts cc
+JOIN MaxChallenges mc ON cc.total_challenges = mc.max_challenges
+OR cc.total_challenges IN (
+    SELECT total_challenges
+    FROM ChallengeCounts
+    GROUP BY total_challenges
+    HAVING COUNT(*) = 1
+)
+ORDER BY cc.total_challenges DESC, cc.hacker_id ASC;
+
+===>Explanation:
+
+ChallengeCounts CTE:
+
+- Joins the Challenges table with the Hackers table to retrieve hacker_id, name, and the total number of challenges created by each hacker.
+- Groups by hacker_id and name, counting the number of challenges each student created.
+
+MaxChallenges CTE:
+
+- Finds the maximum number of challenges created by any student.
+- Final Selection (SELECT Statement):
+
+Retrieves students who created the maximum number of challenges.
+Also includes students who created unique challenge counts (ensuring they are not part of a duplicate lower group).
+Sorts the result by total_challenges in descending order and by hacker_id in ascending order for students with the same challenge count.
+
+===>Test Cases:
+Test Case 1: Basic Case
+
+Input:
+Hackers Table:
+
+hacker_id	name
+21283	Angela
+88255	Patrick
+96196	Lisa
+
+Challenges Table:
+challenge_id	hacker_id
+1	21283
+2	21283
+3	21283
+4	21283
+5	21283
+6	21283
+7	88255
+8	88255
+9	88255
+10	88255
+11	88255
+12	96196
+
+===>Output:
+
+hacker_id	name	total_challenges
+21283	Angela	6
+88255	Patrick	5
+96196	Lisa	1
+
+===>Test Case 2: Exclusion of Duplicates Below Max
+Input:
+Hackers Table:
+
+hacker_id	name
+12299	Rose
+34856	Angela
+79345	Frank
+80491	Patrick
+81041	Lisa
+Challenges Table:
+
+challenge_id	hacker_id
+1	12299
+2	12299
+3	12299
+4	12299
+5	12299
+6	12299
+7	34856
+8	34856
+9	34856
+10	34856
+11	34856
+12	34856
+13	79345
+14	79345
+15	79345
+16	79345
+17	80491
+18	80491
+19	80491
+20	81041
+
+===>Output:
+hacker_id	name	total_challenges
+12299	Rose	6
+34856	Angela	6
+79345	Frank	4
+80491	Patrick	3
+81041	Lisa	1
+
+===>Explanation:
+- Rose and Angela both created 6 challenges, which is the maximum number, so they are included.
+- Frank created 4, and no one else created 4, so he is included.
+- Patrick created 3, and no one else created 3, so he is included.
+- Lisa created 1, and she is the only one with 1, so she is included.
